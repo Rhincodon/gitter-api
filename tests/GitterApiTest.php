@@ -4,6 +4,7 @@ namespace Rhinodontypicus\GitterRestApi\Tests;
 
 use Dotenv\Dotenv;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use Rhinodontypicus\GitterApi\GitterApi;
 use Rhinodontypicus\GitterApi\Models\Room;
 use Rhinodontypicus\GitterApi\Models\User;
@@ -21,7 +22,12 @@ class GitterRestApiTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $env = new Dotenv(realpath(__DIR__ . '/../'));
-        $env->load();
+        try {
+            $env->load();
+        } catch (InvalidArgumentException $e) {
+            echo "Env file not loaded";
+        }
+
         $this->gitter = new GitterApi(getenv('GITTER_TOKEN'));
     }
 
